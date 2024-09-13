@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-   private const string TRIGGER_ATTACK = "attack";
+   
 
    [SerializeField] private float attackCooldown;
    [SerializeField] private Transform firePoint;
@@ -23,13 +23,13 @@ public class PlayerAttack : MonoBehaviour
    {
         if (Input.GetMouseButton(0) && cooldownTimer > attackCooldown && playerMovement.CanAttack())
             Attack();
-
+        
         cooldownTimer += Time.deltaTime;
    }
 
     private void Attack()
     {
-        anim.SetTrigger(TRIGGER_ATTACK);
+        anim.SetTrigger(Constants.TRIGGER_ATTACK);
         cooldownTimer = 0;
 
         fireballs[FindFireball()].transform.position = firePoint.position;
