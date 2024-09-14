@@ -32,17 +32,18 @@ public class PlayerAttack : MonoBehaviour
         anim.SetTrigger(Constants.TRIGGER_ATTACK);
         cooldownTimer = 0;
 
-        fireballs[FindFireball()].transform.position = firePoint.position;
-        fireballs[FindFireball()].GetComponent<Projectile>().SetDirection(Mathf.Sign(transform.localScale.x));
+        GameObject fireball = Utils.PullInactiveGameObjectFromList(fireballs);
+        fireball.transform.position = firePoint.position;
+        fireball.GetComponent<Projectile>().SetDirection(Mathf.Sign(transform.localScale.x));
     }
 
-    private int FindFireball()
-    {
-        for (int i = 0; i < fireballs.Length; i++)
-        {
-            if (!fireballs[i].activeInHierarchy)
-                return i;
-        }
-        return 0;
-    }
+    // private int FindFireball()
+    // {
+    //     for (int i = 0; i < fireballs.Length; i++)
+    //     {
+    //         if (!fireballs[i].activeInHierarchy)
+    //             return i;
+    //     }
+    //     return 0;
+    // }
 }

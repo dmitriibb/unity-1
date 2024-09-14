@@ -1,16 +1,24 @@
+using System.Collections;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
+    [Header("Health")]
     [SerializeField] private float startingHealth;
     public float currentHealth { get; private set; }
     private Animator anim;
     private bool dead;
 
+    [Header("iFrames")]
+    [SerializeField] private float iFramesDuration;
+    [SerializeField] private int numberOfFlashes;
+    private SpriteRenderer spriteRenderer;
+
     private void Awake()
     {
         currentHealth = startingHealth;
         anim = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public void TakeDamage(float damage)
@@ -19,6 +27,7 @@ public class Health : MonoBehaviour
         if (currentHealth > 0)
         {
             anim.SetTrigger(Constants.TRIGGER_PLAYER_HURT);
+            StartCoroutine(Invulnerability());
         }
         else
         {
@@ -36,9 +45,18 @@ public class Health : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth + value, 0, startingHealth);
     }
 
-    // private void Update()
-    // {
-    //     if(Input.GetKeyDown(KeyCode.E))
-    //         TakeDamage(1);
-    // }
+    
+    private IEnumerator Invulnerability()
+    {
+        Physics2D.IgnoreLayerCollision(Constants.LAYER_PLAYER, Constants.LAYER_ENEMY, true);
+        for (int i = 0; i < numberOfFlashes; i++)
+        {
+            spriteRenderer.color = new Color(1, 0, 0, 0.5f);
+            yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes * 2));
+            spriteRenderer.color = Color.white;
+            yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes * 2));
+        }
+        Physics2D.IgnoreLayerCollision(Constants.LAYER_PLAYER, Constants.LAYER_ENEMY, false);
+    }
+
 }

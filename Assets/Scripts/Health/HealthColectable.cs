@@ -8,7 +8,7 @@ public class HealthColectable : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.tag == Constants.TAG_PLAYER)
+        if (collider.CompareTag(Constants.TAG_PLAYER))
         {
             collider.GetComponent<Health>().AddHealth(healthValue);
             gameObject.SetActive(false);
