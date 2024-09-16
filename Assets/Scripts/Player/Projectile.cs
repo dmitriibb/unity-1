@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    private const string TRIGGER_EXPLODE = "explode";
-
     [SerializeField] private float speed;
     private float direction;
     private bool hit;
@@ -29,11 +27,14 @@ public class Projectile : MonoBehaviour
         if (lifetime > 5) Deactivate();
     }
 
-    private void OnTriggerEnter2D(Collider2D collison)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
         hit = true;
         boxCollider.enabled = false;
-        anim.SetTrigger(TRIGGER_EXPLODE);
+        anim.SetTrigger(Constants.TRIGGER_FIREBALL_EXPLODE);
+
+        if (collider.CompareTag(Constants.TAG_ENEMY))
+            collider.GetComponent<Health>().TakeDamage(1);
     }
 
     public void SetDirection(float direction)
@@ -53,7 +54,6 @@ public class Projectile : MonoBehaviour
 
     private void Deactivate()
     {
-        // print("Deactivate()");
         gameObject.SetActive(false);
     }
 }

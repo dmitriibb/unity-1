@@ -29,7 +29,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void Attack()
     {
-        anim.SetTrigger(Constants.TRIGGER_ATTACK);
+        anim.SetTrigger(Constants.TRIGGER_PLAYER_ATTACK);
         cooldownTimer = 0;
 
         GameObject fireball = Utils.PullInactiveGameObjectFromList(fireballs);
