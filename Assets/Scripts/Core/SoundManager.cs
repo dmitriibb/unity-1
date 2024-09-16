@@ -10,9 +10,9 @@ public class SoundManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        audioSource = GetComponent<AudioSource>();
         if (instance == null) {
             instance = this;
+            audioSource = GetComponent<AudioSource>();
             DontDestroyOnLoad(gameObject);
         }
     }

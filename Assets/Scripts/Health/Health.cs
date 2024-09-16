@@ -26,12 +26,21 @@ public class Health : MonoBehaviour
         currentHealth = startingHealth;
         anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        soundHurt = GlobalVars.Instance.SoundHurt;
-        soundDied = GlobalVars.Instance.SoundDied;
+        UpdateSounds();
+    }
+
+    private void UpdateSounds()
+    {
+        if (soundHurt == null && soundDied == null && GlobalVars.Instance != null)
+        {
+            soundHurt = GlobalVars.Instance.SoundHurt;
+            soundDied = GlobalVars.Instance.SoundDied;
+        }
     }
 
     public void TakeDamage(float damage)
     {
+        UpdateSounds();
         if (invulnerabile) return;
         // print($"{tag}-TakeDamage({damage}) ({currentHealth}/{startingHealth})");
         switch (tag)
