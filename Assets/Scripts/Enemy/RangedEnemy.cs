@@ -8,6 +8,7 @@ public class RangedEnemy : MonoBehaviour
 
     [SerializeField] private Transform firepoint;
     [SerializeField] private GameObject[] fireballs;
+    [SerializeField] private AudioClip soundAttack;
 
     [SerializeField] private float colliderDistance;
     [SerializeField] private BoxCollider2D boxCollider;
@@ -26,12 +27,11 @@ public class RangedEnemy : MonoBehaviour
     void Update()
     {
         cooldownTimer += Time.deltaTime;
-        if (IsPlayerInSight())
+        if (IsPlayerInSight() && cooldownTimer >= attackCooldown)
         {
-            if(cooldownTimer >= attackCooldown)
-                RangeAttack();
+            RangeAttack();
         }
-        
+            
     }
 
     private bool IsPlayerInSight()
@@ -55,9 +55,12 @@ public class RangedEnemy : MonoBehaviour
 
     private void RangeAttack()
     {
-        cooldownTimer = 0;
+        SoundManager.instance.PlaySound(soundAttack);
         anim.SetTrigger(Constants.TRIGGER_ENEMY_ATTACK_RANGE);
         GameObject fireball = Utils.PullInactiveGameObjectFromList(fireballs);
+        print($"cooldownTimer={cooldownTimer}, attackCooldown = {attackCooldown}");
+        cooldownTimer = 0;
+        print($"{this}-{this.GetInstanceID()}RangeAttack() fireball - {fireball.GetInstanceID()}");
         fireball.transform.position = firepoint.position;
         fireball.GetComponent<EnemyProjectile>().ActiveteProjectile();
     }

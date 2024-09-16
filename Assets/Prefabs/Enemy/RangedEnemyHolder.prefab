@@ -201,6 +201,7 @@ MonoBehaviour:
   startingHealth: 3
   iFramesDuration: 0
   numberOfFlashes: 0
+  components: []
 --- !u!114 &5172917759269036183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,7 +214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5255002bb60b2d4fba24c949b34e3f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackCooldown: 1
+  attackCooldown: 4
   range: 4
   damage: 1
   firepoint: {fileID: 7383778373300922831}
@@ -228,6 +229,7 @@ MonoBehaviour:
   - {fileID: 3545275724057694029}
   - {fileID: 2158216063101881380}
   - {fileID: 5526433616714351530}
+  soundAttack: {fileID: 8300000, guid: e6a9e23e165ac31428567278d2de5d54, type: 3}
   colliderDistance: 2.5
   boxCollider: {fileID: 3846821867991545049}
   playerLayer:
@@ -248,7 +250,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8358553729350528344
 Transform:
   m_ObjectHideFlags: 0

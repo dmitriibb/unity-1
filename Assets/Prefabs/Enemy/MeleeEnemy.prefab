@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &450441686492122961
 Transform:
   m_ObjectHideFlags: 0
@@ -140,6 +140,7 @@ MonoBehaviour:
   attackCooldown: 1
   range: 1.1
   damage: 1
+  soundAttack: {fileID: 8300000, guid: 1b43dc9d5e54ac640b305c40a9624a91, type: 3}
   colliderDistance: 1.7
   boxCollider2: {fileID: 3406549712190063083}
   playerLayer:

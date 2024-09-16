@@ -5,7 +5,7 @@ public class MeleeEnemy : MonoBehaviour
     [SerializeField] private float attackCooldown;
     [SerializeField] private float range;
     [SerializeField] private int damage;
-    
+    [SerializeField] private AudioClip soundAttack;
     
     [SerializeField] private float colliderDistance;
     [SerializeField] private BoxCollider2D boxCollider2;
@@ -28,13 +28,13 @@ public class MeleeEnemy : MonoBehaviour
         cooldownTimer += Time.deltaTime;
         if (IsPlayerInSight())
         {
-            if(cooldownTimer >= attackCooldown)
+            if(cooldownTimer >= attackCooldown && playerHealth.currentHealth > 0)
             {
                 cooldownTimer = 0;
+                SoundManager.instance.PlaySound(soundAttack);
                 anim.SetTrigger(Constants.TRIGGER_ENEMY_ATTACK_MELEE);
             }
-        }
-        
+        }  
     }
 
     private bool IsPlayerInSight()

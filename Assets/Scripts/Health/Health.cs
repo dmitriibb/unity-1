@@ -18,17 +18,22 @@ public class Health : MonoBehaviour
     [Header("Components to disable after death")]
     [SerializeField] private Behaviour[] components;
 
+    private AudioClip soundHurt;
+    private AudioClip soundDied;
+
     private void Awake()
     {
         currentHealth = startingHealth;
         anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        soundHurt = GlobalVars.Instance.SoundHurt;
+        soundDied = GlobalVars.Instance.SoundDied;
     }
 
     public void TakeDamage(float damage)
     {
         if (invulnerabile) return;
-        print($"{tag}-TakeDamage({damage}) ({currentHealth}/{startingHealth})");
+        // print($"{tag}-TakeDamage({damage}) ({currentHealth}/{startingHealth})");
         switch (tag)
         {
             case Constants.TAG_PLAYER:
@@ -49,11 +54,13 @@ public class Health : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth - damage, 0, startingHealth);
         if (currentHealth > 0)
         {
+            SoundManager.instance.PlaySound(soundHurt);
             anim.SetTrigger(Constants.TRIGGER_PLAYER_HURT);
             StartCoroutine(Invulnerability());
         }
         else
         {
+            SoundManager.instance.PlaySound(soundDied);
             anim.SetTrigger(Constants.TRIGGER_PLAYER_DIED);
             foreach (Behaviour component in components)
             {
@@ -69,11 +76,12 @@ public class Health : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth - damage, 0, startingHealth);
         if (currentHealth > 0)
         {
+            SoundManager.instance.PlaySound(soundHurt);
             anim.SetTrigger(Constants.TRIGGER_ENEMY_HURT);
         }
         else
         {
-
+            SoundManager.instance.PlaySound(soundDied);
             anim.SetTrigger(Constants.TRIGGER_ENEMY_DIED);
             foreach (Behaviour component in components)
             {
