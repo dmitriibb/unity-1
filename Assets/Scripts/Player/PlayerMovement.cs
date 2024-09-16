@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,8 +10,19 @@ public class PlayerMovement : MonoBehaviour
     const string TAG_GROUND = "Ground";
     const string TRIGGER_JUMP = "jump";
 
+    [Header("Movements")]
     [SerializeField] private float speed;
     [SerializeField] private float jumpPower;
+
+    [Header("Coyote time")]
+    [SerializeField] private float coyoteTime;
+    private float coyoteCounter;
+
+    [Header("Multiple jumps")]
+    [SerializeField] private int extraJumps;
+    private int jumpCounter;
+
+    [Header("Layers")]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
     private Rigidbody2D body;
@@ -42,44 +54,54 @@ public class PlayerMovement : MonoBehaviour
         anim.SetBool(ANIM_CONDITION_RUN, horizontalInput != 0);
         anim.SetBool(ANIM_CONDITION_GROUNDED, IsGrounded());
 
-        // print($"OnWall - {OnWall()}");
-        if (wallJumpCooldown > 0.2f)
-        {   
-            body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
+        // Jump
+        if (Input.GetKeyDown(KeyCode.Space))
+            Jump();
 
-            if (OnWall() && !IsGrounded()) {
-                body.gravityScale = 0;
-                body.velocity = Vector2.zero;
-            } else
-                body.gravityScale = initialGravityScale;
-
-            if (Input.GetKey(KeyCode.Space))
-                Jump();
+        // Adjustable jump height
+        if (Input.GetKeyUp(KeyCode.Space) && body.velocity.y > 0) {
+            body.velocity = new Vector2(body.velocity.x, body.velocity.y / 2);
         }
-        else
-            wallJumpCooldown += Time.deltaTime;
+
+        if (OnWall()) {
+            body.gravityScale = 0;
+            body.velocity = Vector2.zero;
+        } else {
+            body.gravityScale = initialGravityScale;
+            body.velocity = new (horizontalInput * speed, body.velocity.y);
+
+            if (IsGrounded()) {
+                coyoteCounter = coyoteTime;
+                jumpCounter = extraJumps;
+            } else {
+                coyoteCounter -= Time.deltaTime;
+            }
+        }
     }
 
     private void Jump()
     {
-        if (IsGrounded())
-        {
-            body.velocity = new Vector2(body.velocity.x, jumpPower);
-            anim.SetTrigger(TRIGGER_JUMP);
-        }
-        else if (OnWall() && !IsGrounded())
-        {
-            if (horizontalInput == 0)
-            {
-                // just jump off the wall and fall down
-                body.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 10, 0);
-                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        if (coyoteCounter <= 0 && !OnWall() && jumpCounter <= 0) return;
+
+        if (OnWall()) {
+            jumpCounter = extraJumps;
+            WallJump();
+        } else {
+            if (IsGrounded())
+                body.velocity = new (body.velocity.x, jumpPower);
+            else if (coyoteCounter > 0) {
+                body.velocity = new (body.velocity.x, jumpPower);
+                coyoteCounter = 0;
+            } else if (jumpCounter > 0) {
+                body.velocity = new (body.velocity.x, jumpPower);
+                jumpCounter--;
             }
-            else
-                body.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 3, initialGravityScale);
-            
-            wallJumpCooldown = 0;
+
         }
+    }
+
+    private void WallJump()
+    {
         
     }
 
