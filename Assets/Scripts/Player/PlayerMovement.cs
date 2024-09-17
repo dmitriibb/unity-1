@@ -1,5 +1,3 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -22,14 +20,18 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private int extraJumps;
     private int jumpCounter;
 
+    [Header("Wall jump")]
+    [SerializeField] private float wallJumpX;
+    [SerializeField] private float wallJumpY;
+
     [Header("Layers")]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
+
     private Rigidbody2D body;
     private Animator anim;
     // private bool grounded;
     private BoxCollider2D boxCollider;
-    private float wallJumpCooldown;
     private float initialGravityScale;
     private float horizontalInput;
     
@@ -102,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void WallJump()
     {
-        
+        body.AddForce(new Vector2(-Mathf.Sign(transform.localScale.x) * wallJumpX, wallJumpY));
     }
 
     // private void OnCollisionEnter2D(Collision2D collision)

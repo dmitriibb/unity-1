@@ -70,11 +70,11 @@ public class Health : MonoBehaviour
         else
         {
             SoundManager.instance.PlaySound(soundDied);
+            // foreach (Behaviour component in components)
+            // {
+            //     component.enabled = false;
+            // }
             anim.SetTrigger(Constants.TRIGGER_PLAYER_DIED);
-            foreach (Behaviour component in components)
-            {
-                component.enabled = false;
-            }
             dead = true;
         }
     }
@@ -108,6 +108,18 @@ public class Health : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth + value, 0, startingHealth);
     }
 
+    public void RespwanHealth()
+    {
+        print($"RespwanHealth");
+        dead = false;
+        AddHealth(startingHealth);
+        anim.ResetTrigger(Constants.TRIGGER_PLAYER_DIED);
+        anim.Play(Constants.ANIM_PLAYER_IDLE);
+        StartCoroutine(Invulnerability());
+
+        foreach (Behaviour component in components)
+            component.enabled = true;
+    }
     
     private IEnumerator Invulnerability()
     {
@@ -126,7 +138,8 @@ public class Health : MonoBehaviour
 
     public void Died()
     {
-        gameObject.SetActive(false);
+        if (!CompareTag(Constants.TAG_PLAYER))
+            gameObject.SetActive(false);
     }
 
 }

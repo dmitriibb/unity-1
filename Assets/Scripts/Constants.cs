@@ -6,6 +6,7 @@ public static class Constants
     public const string TAG_PLAYER = "Player";
     public const string TAG_WALL = "Wall";
     public const string TAG_ENEMY = "Enemy";
+    public const string TAG_CHECKPOINT = "Checkpoint";
 
     public const string TRIGGER_PLAYER_ATTACK = "attack";
     public const string TRIGGER_PLAYER_HURT = "hurt";
@@ -17,8 +18,12 @@ public static class Constants
     public const string TRIGGER_ENEMY_HURT = "hurt";
     public const string TRIGGER_ENEMY_DIED = "die";
 
+    public const string TRIGGER_CHECKPOINT_APPEAR = "appear";
+
     public const int LAYER_PLAYER = 8;
     public const int LAYER_ENEMY = 9;
+
+    public const string ANIM_PLAYER_IDLE = "idle";
 
     public const string ANIM_PARAM_ACTIVATED = "activated";
     public const string ANIM_PARAM_ENEMY_MOVING = "moving";
