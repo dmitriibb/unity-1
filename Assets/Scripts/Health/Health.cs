@@ -110,7 +110,6 @@ public class Health : MonoBehaviour
 
     public void RespwanHealth()
     {
-        print($"RespwanHealth");
         dead = false;
         AddHealth(startingHealth);
         anim.ResetTrigger(Constants.TRIGGER_PLAYER_DIED);
